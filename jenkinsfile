@@ -2,43 +2,39 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variable for Docker image tag
-        IMAGE_TAG = "matanshikli/project:${env.BUILD_NUMBER}"
+        IMAGE_TAG = "matan/k8stest:${env.BUILD_NUMBER}"
     }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
-                sh 'docker build -t $IMAGE_TAG .'
+                echo 'Building Docker Image...'
+                script {
+                    docker.build(IMAGE_TAG)
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Testing...'
-                sh 'docker run -t $IMAGE_TAG .'
+                echo 'Running Tests...'
+                // Add your test commands here
             }
         }
 
-        stage('Docker Push') {
-            steps {
-                echo 'Pushing Docker Image...'
-                // sh 'docker push $IMAGE_TAG'
-            }
-        }
+        
 
         stage('Merge to Master') {
+            when {
+                branch 'development'
+            }
             steps {
                 script {
                     if (currentBuild.result == 'SUCCESS') {
-                        // Merge to master branch
-                        // This requires Git credentials configured in Jenkins
-                        sh '''
-                            git checkout master
-                            git merge development
-                            git push origin master
-                        '''
+                        echo 'Merging to Master Branch...'
+                        sh 'git checkout master'
+                        sh 'git merge development'
+                        sh 'git push origin master'
                     }
                 }
             }
