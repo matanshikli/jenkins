@@ -10,23 +10,20 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                // Add steps to build your project here
-                // For Docker:
-                // sh 'docker build -t $IMAGE_TAG .'
+                sh 'docker build -t $IMAGE_TAG .'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing...'
-                // Add steps to test your project here
+                sh 'docker run -t $IMAGE_TAG .'
             }
         }
 
         stage('Docker Push') {
             steps {
                 echo 'Pushing Docker Image...'
-                // Push the Docker image
                 // sh 'docker push $IMAGE_TAG'
             }
         }
