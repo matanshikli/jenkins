@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variable for Docker image tag
+        IMAGE_TAG = "matanshikli/project:${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                // Add steps to build your project here
+                // For Docker:
+                // sh 'docker build -t $IMAGE_TAG .'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                // Add steps to test your project here
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                echo 'Pushing Docker Image...'
+                // Push the Docker image
+                // sh 'docker push $IMAGE_TAG'
+            }
+        }
+
+        stage('Merge to Master') {
+            steps {
+                script {
+                    if (currentBuild.result == 'SUCCESS') {
+                        // Merge to master branch
+                        // This requires Git credentials configured in Jenkins
+                        sh '''
+                            git checkout master
+                            git merge development
+                            git push origin master
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
