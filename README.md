@@ -19,9 +19,11 @@ The Python application uses `boto3` to query AWS EC2 instances and the `python-j
 
 ### Setting Up Jenkins
 1. The Jenkins server should have Docker installed and configured (`Dockerfile.jenkins` file)
-2. Use the provided Job DSL script to create the Jenkins job.
+2. Install GitHub and DSL plugins
 3. Add GitHub auth token with push rights to Jenkins credentials 
-4. The job listens for changes in the `development` branch and executes the pipeline.
+4. Create a new freestyle job and connect your GitHub repo with source management
+5. Use the provided Job DSL script to create the Jenkins job.
+6. The job listens for changes in the `development` branch and executes the pipeline.
 
 ### Setting Up GitHub
 
