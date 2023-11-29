@@ -1,43 +1,39 @@
-pipeline {
-    agent any
-
-    environment {
-        IMAGE_TAG = "matan/k8stest:${env.BUILD_NUMBER}"
+job('merge-dev-to-main') {
+    scm {
+        git {
+            remote {
+                url('https://github.com/matanshikli/jenkins')
+                credentials('GITHUB_AUTH')
+            }
+            branches('*/development')
+        }
     }
-
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building Docker Image...'
-                script {
-                    docker.build(IMAGE_TAG)
-                }
-            }
+    wrappers {
+        credentialsBinding {
+            usernamePassword('GIT_PASSWORD', 'GITHUB_AUTH')
         }
+    }
+    steps {
+        // First Step: Docker Build
+        shell('''
+            #!/bin/bash
+            set -e
+            IMAGE_TAG="matan/k8stest:${BUILD_NUMBER}"
+            docker build -t $IMAGE_TAG .
+        ''')
 
-        stage('Test') {
-            steps {
-                echo 'Running Tests...'
-                // Add your test commands here
-            }
-        }
-
-        
-
-        stage('Merge to Master') {
-            when {
-                branch 'development'
-            }
-            steps {
-                script {
-                    if (currentBuild.result == 'SUCCESS') {
-                        echo 'Merging to Master Branch...'
-                        sh 'git checkout master'
-                        sh 'git merge development'
-                        sh 'git push origin master'
-                    }
-                }
-            }
-        }
+        // Second Step: Git Operations
+        shell('''
+            #!/bin/bash
+            set -e
+            git config --global user.email "you@example.com"
+            git config --global user.name "Jenkins dsl"
+            git fetch origin
+            git checkout main
+            git merge --no-ff origin/development
+            git push https://${GIT_PASSWORD}@github.com/matanshikli/jenkins main
+        ''')
     }
 }
+
+queue('merge-dev-to-main')
