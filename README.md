@@ -30,7 +30,7 @@ The Python application uses `boto3` to query AWS EC2 instances and the `python-j
 
 ### Running the Pipeline
 1. Push code to the `development` branch.
-2. Jenkins automatically triggers the build.
+2. Jenkins automatically triggers the build (you need to approve the DSL script first).
 3. Check build logs for success or failure.
 4. On successful build, code is merged to `main`.
 
