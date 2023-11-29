@@ -43,3 +43,6 @@ The Python application uses `boto3` to query AWS EC2 instances and the `python-j
 ## Note
 - Ensure that AWS credentials are securely managed.
 - Modify the scheduling time as needed through environment variables.
+
+
+![image](https://github.com/matanshikli/jenkins/assets/106749791/fe70cfa5-80ae-44ae-a5d4-db3c3d1e25e1)
