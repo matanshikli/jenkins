@@ -20,15 +20,21 @@ The Python application uses `boto3` to query AWS EC2 instances and the `python-j
 ### Setting Up Jenkins
 1. The Jenkins server should have Docker installed and configured (`Dockerfile.jenkins` file)
 2. Install GitHub and DSL plugins
-3. Add GitHub auth token with push rights to Jenkins credentials 
 4. Create a new freestyle job and connect your GitHub repo with source management
 5. Use the provided Job DSL script to create the Jenkins job.
 6. The job listens for changes in the `development` branch and executes the pipeline.
 
 ### Setting Up GitHub
-
 1. create a webhook from your repo to your Jenkins server, for ex: http://54.78.159.13:8080/github-webhook
 2. create personal access token
+
+### Setting Up AWS
+1. create access key with the right permissions
+
+### Credentials in Jenkins
+1. Add GitHub auth token with push rights to Jenkins credentials (username and password) with the ID 'GITHUB_AUTH'
+2. Add AWS credentials to Jenkins credentials under the ID 'AWS_AUTH', save the key ID in the user name field.
+3. Add AWS default region to Jenkins credentials under the ID 'AWS_DEFAULT', save the value under the password with empty user name.
 
 ### Running the Pipeline
 1. Push code to the `development` branch.
