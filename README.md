@@ -1,7 +1,7 @@
-#  Jenkins pipe
+#  Jenkins project
 
 ## Overview
-This project automates the deployment of a Python application that interacts with AWS EC2 to monitor Kubernetes clusters. It runs every 5 minutes, checks for running EC2 instances with specific tags, and logs the information as JSON.
+This project automates the deployment of a Python application that interacts with AWS EC2 to monitor Kubernetes clusters.
 
 ## Dockerfile
 The Dockerfile is a multi-stage build:
@@ -14,7 +14,7 @@ The Python application uses `boto3` to query AWS EC2 instances and the `python-j
 
 ## Jenkins Pipeline
 - The pipeline triggers on every push to the `development` branch.
-- It builds a Docker image tagged with the Jenkins build number.
+- It builds a Docker image tagged with the Jenkins build number, and with the AWS credentials.
 - If the build is successful, it automatically merges the code to the `master` branch.
 
 ### Setting Up Jenkins
