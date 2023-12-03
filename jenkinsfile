@@ -11,6 +11,10 @@ job('merge-dev-to-main') {
     wrappers {
         credentialsBinding {
             usernamePassword('GIT_PASSWORD', 'GITHUB_AUTH')
+            // Binding AWS credentials (Access Key and Secret Access Key)
+            usernamePassword('AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_AUTH')
+            // Binding AWS default region
+            string('AWS_DEFAULT_REGION', 'AWS_REGION')
         }
     }
     steps {
@@ -19,7 +23,10 @@ job('merge-dev-to-main') {
             #!/bin/bash
             set -e
             IMAGE_TAG="matan/k8stest:${BUILD_NUMBER}"
-            docker build -t $IMAGE_TAG .
+            docker build --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+                         --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                         --build-arg AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION \
+                         -t $IMAGE_TAG .
         ''')
 
         // Second Step: Git Operations
