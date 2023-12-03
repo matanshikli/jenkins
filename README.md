@@ -29,7 +29,7 @@ The Dockerfile is a multi-stage build:
 ### Setting Up Jenkins
 1. The Jenkins server should have Docker installed and configured (`Dockerfile.jenkins` file)
 2. Install GitHub and DSL plugins
-3. Credentials in Jenkins
+3. Credentials in Jenkins:
   - Add GitHub auth token with push rights to Jenkins credentials (username and password) with the ID 'GITHUB_AUTH'
   - Add AWS credentials to Jenkins credentials under the ID 'AWS_AUTH', save the key ID in the user name field.
   - Add AWS default region to Jenkins credentials under the ID 'AWS_DEFAULT', save the value under the password with empty user name.
